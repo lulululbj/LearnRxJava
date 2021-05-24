@@ -7,25 +7,21 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 /*
  * author: luyao
- * date: 2021/5/21 15:05
+ * date:   2021/5/24 11:14
  */
-public class OperatorCreateActivity extends BaseOperatorActivity {
+public class OperatorDoOnNextActivity extends BaseOperatorActivity {
 
     @Override
     protected void init() {
+        /*
+         * doOnNext() 在 onNext() 被调用的时候执行，
+         * 时间顺序发生在 onNext() 之前
+         */
         observable = Observable.create(emitter -> {
-            /*
-             * onError 之后调用 onComplete/onNext，不会再响应
-             * onComplete 之后调用 onError，会 crash
-             */
             emitter.onNext("1");
             emitter.onNext("2");
-            emitter.onNext("3");
-//            emitter.onError(new Throwable("error"));
-//            emitter.onComplete();
-            emitter.onNext("4");
-            throw new Exception("error");
-        });
+            emitter.onComplete();
+        }).doOnNext(o -> bindText("doOnNext: " + o.toString()));
 
         observer = new Observer<String>() {
             @Override
@@ -48,6 +44,5 @@ public class OperatorCreateActivity extends BaseOperatorActivity {
                 bindText("onComplete");
             }
         };
-
     }
 }

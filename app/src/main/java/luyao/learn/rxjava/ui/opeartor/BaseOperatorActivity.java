@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
 import luyao.learn.rxjava.R;
 import luyao.learn.rxjava.bean.ItemBean;
 import luyao.learn.rxjava.databinding.ActivityOperatorBinding;
@@ -17,6 +19,9 @@ public abstract class BaseOperatorActivity extends AppCompatActivity {
 
     public static final String BEAN = "item_bean";
     protected ActivityOperatorBinding binding;
+
+    protected Observable observable;
+    protected Observer observer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,12 +32,11 @@ public abstract class BaseOperatorActivity extends AppCompatActivity {
         init();
     }
 
-    protected void init() {
-    }
+    abstract void init();
 
     private void bind() {
         bindOperation((ItemBean) getIntent().getSerializableExtra(BEAN));
-        binding.subscribeBt.setOnClickListener( v -> {
+        binding.subscribeBt.setOnClickListener(v -> {
             subscribe();
         });
     }
@@ -51,6 +55,7 @@ public abstract class BaseOperatorActivity extends AppCompatActivity {
     }
 
     protected void subscribe() {
-
+        if (observable != null && observer != null)
+            observable.subscribe(observer);
     }
 }

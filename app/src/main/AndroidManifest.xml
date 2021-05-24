@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.opeartor.OperatorCreateActivity" />
+        <activity android:name=".ui.opeartor.OperatorDoOnNextActivity" />
     </application>
 
 </manifest>
